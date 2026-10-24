@@ -83,6 +83,27 @@ class EngineProperties(unittest.TestCase):
         inputs=self.defaults('conductor_resistance');inputs['area']={'value':25,'unit':'mm2'}
         self.assertAlmostEqual(calculate('conductor_resistance',inputs)['results']['resistance'],.06896)
 
+    def test_angle_provenance_uses_normalized_radians(self):
+        inputs=self.defaults('symmetrical_components')
+        result=calculate('symmetrical_components',inputs)
+        self.assertEqual(result['input_units']['b_angle'],'rad')
+        self.assertAlmostEqual(result['inputs_si']['b_angle'],-2*math.pi/3)
+        inputs['b_angle']={'value':-2*math.pi/3,'unit':'rad'}
+        converted=calculate('symmetrical_components',inputs)
+        self.assertAlmostEqual(converted['results']['positive']['real'],230)
+
+    def test_unit_name_must_be_a_string(self):
+        for unit in [[],{},None,1]:
+            with self.subTest(unit=unit), self.assertRaises(ValueError):
+                convert(1,unit,'voltage')
+
+    def test_integer_counts_accept_integral_numeric_values(self):
+        inputs=self.defaults('synchronous_speed')
+        for poles in [4,4.0,{'value':4,'unit':'count'}]:
+            with self.subTest(poles=poles):
+                inputs['poles']=poles
+                self.assertEqual(calculate('synchronous_speed',inputs)['results']['speed'],1500)
+
     def test_capacitive_reactive_power_is_negative(self):
         inputs=self.defaults('balanced_star');inputs['reactance']=-1
         self.assertLess(calculate('balanced_star',inputs)['results']['reactive'],0)

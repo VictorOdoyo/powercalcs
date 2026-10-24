@@ -3,8 +3,9 @@ from powercalcs.catalog import calculate
 
 class ReferenceCase(unittest.TestCase):
     def test_worked_reference(self):
-        result=calculate('motor_start_drop', {'voltage': 400, 'start_current': 300, 'resistance': 1, 'reactance': 1, 'start_pf': 0.35})
-        for key, expected in {'drop': 668.6037188883105}.items():
+        result=calculate('motor_start_drop', {'voltage': 400, 'start_current': 300, 'resistance': 0.05, 'reactance': 0.03, 'start_pf': 0.35})
+        # Independently evaluated with 40-digit Decimal arithmetic.
+        for key, expected in {'drop': 23.695749405365762, 'drop_percent': 5.923937351341441}.items():
             with self.subTest(output=key):
                 actual=result['results'][key]
                 if isinstance(expected, list):

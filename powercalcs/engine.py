@@ -27,7 +27,7 @@ class Field:
             raise ValueError(f'{self.label}: must be {">" if self.exclusive_minimum else ">="} {self.minimum} {self.unit}')
         if self.maximum is not None and value > self.maximum:
             raise ValueError(f'{self.label}: must be <= {self.maximum} {self.unit}')
-        if self.integer and not value.is_integer():
+        if self.integer and value != int(value):
             raise ValueError(f'{self.label}: must be an integer')
         return value
 
@@ -81,7 +81,7 @@ class Calculator:
             raise ValueError('Calculation produced undefined or out-of-range results')
         return {'calculator': self.id, 'title': self.title, 'version': '1.0.0',
                 'timestamp': datetime.now(timezone.utc).isoformat(),
-                'inputs_si': values, 'input_units': {f.key: f.unit for f in self.fields},
+                'inputs_si': values, 'input_units': {f.key: 'rad' if f.dimension == 'angle' else f.unit for f in self.fields},
                 'results': encode(results), 'output_units': self.outputs,
                 'steps': [{'number': i + 1, 'equation': equation} for i, equation in enumerate(self.formulas)],
                 'assumptions': list(self.assumptions)}

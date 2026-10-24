@@ -10,6 +10,8 @@ def catalog():
     return entries
 
 def convert(value, source, dimension):
+    if not isinstance(source, str):
+        raise ValueError('Unit must be a string')
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         raise ValueError('Quantity must be a finite number')
     try:

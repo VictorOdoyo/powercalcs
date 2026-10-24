@@ -12,8 +12,8 @@ Bare numbers use the displayed units below. Quantity objects may use another com
 | --- | --- | --- | --- |
 | `voltage` | Line-to-line RMS voltage | 400 | V |
 | `start_current` | Starting RMS current | 300 | A |
-| `resistance` | Resistance | 1 | ohm |
-| `reactance` | Reactance (+ inductive) | 1 | ohm |
+| `resistance` | Per-phase feeder resistance | 0.05 | ohm |
+| `reactance` | Per-phase feeder reactance (+ inductive) | 0.03 | ohm |
 | `start_pf` | Starting lagging power factor | 0.35 | pu |
 
 ## Derivation
@@ -22,14 +22,15 @@ Bare numbers use the displayed units below. Quantity objects may use another com
 
 ## Reference outputs
 
-- `drop` = 668.6037188883105 V
+- `drop` = 23.695749405365762 V
+- `drop_percent` = 5.923937351341441 %
 
 Complex reference values are `[real, imaginary]`; API outputs also include magnitude and angle in degrees. Numerical results use double precision; display rounding does not change the exported values.
 
 ## Reproduce
 
 ```sh
-python -m powercalcs calculate motor_start_drop --inputs '{"voltage": 400, "start_current": 300, "resistance": 1, "reactance": 1, "start_pf": 0.35}'
+python -m powercalcs calculate motor_start_drop --inputs '{"voltage": 400, "start_current": 300, "resistance": 0.05, "reactance": 0.03, "start_pf": 0.35}'
 python -m unittest tests.test_calc_motor_start_drop
 ```
 

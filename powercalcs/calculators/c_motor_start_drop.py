@@ -14,8 +14,8 @@ CALCULATOR = Calculator(
     fields=(
     Field('voltage', 'Line-to-line RMS voltage', 'V', 'voltage', 400, 0, None, True, False),
     Field('start_current', 'Starting RMS current', 'A', 'current', 300, 0, None, False, False),
-    Field('resistance', 'Resistance', 'ohm', 'impedance', 1, 0, None, False, False),
-    Field('reactance', 'Reactance (+ inductive)', 'ohm', 'impedance', 1, None, None, False, False),
+    Field('resistance', 'Per-phase feeder resistance', 'ohm', 'impedance', 0.05, 0, None, False, False),
+    Field('reactance', 'Per-phase feeder reactance (+ inductive)', 'ohm', 'impedance', 0.03, None, None, False, False),
     Field('start_pf', 'Starting lagging power factor', 'pu', 'ratio', 0.35, 0, 1, False, False),
     ),
     outputs={'drop': 'V', 'drop_percent': '%'},

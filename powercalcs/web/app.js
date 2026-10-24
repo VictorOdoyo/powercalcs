@@ -61,19 +61,32 @@ function readInputs() {
 function drawPhasors(result) {
   const entries = Object.entries(result.results).filter(([, v]) => v && typeof v === 'object' && 'real' in v);
   const canvas = $('phasor'); canvas.hidden = !entries.length; if (!entries.length) return;
-  const ctx = canvas.getContext('2d'), width = canvas.width, height = canvas.height;
-  const max = Math.max(...entries.map(([, v]) => v.magnitude), 1e-20), scale = 100 / max;
-  ctx.fillStyle = '#142022'; ctx.fillRect(0, 0, width, height); ctx.strokeStyle = '#395053'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(30, 150); ctx.lineTo(350, 150); ctx.moveTo(190, 25); ctx.lineTo(190, 275); ctx.stroke();
+  const groups = new Map();
+  for (const entry of entries) {
+    const unit = result.output_units[entry[0]];
+    if (!groups.has(unit)) groups.set(unit, []);
+    groups.get(unit).push(entry);
+  }
+  canvas.height = 300 * groups.size;
+  const ctx = canvas.getContext('2d'), width = canvas.width;
+  ctx.fillStyle = '#142022'; ctx.fillRect(0, 0, width, canvas.height);
   const colors = ['#a7efce', '#e6aa6b', '#87bcf1', '#e6a4d6', '#e3de92', '#b1a7ef', '#82d6d0'];
-  ctx.font = '11px monospace'; ctx.fillStyle = '#92a4aa'; ctx.fillText('Im', 197, 25); ctx.fillText('Re', 335, 168);
-  entries.forEach(([key, v], index) => {
-    const x = 190 + v.real * scale, y = 150 - v.imag * scale, a = Math.atan2(y - 150, x - 190);
-    ctx.strokeStyle = colors[index % colors.length]; ctx.fillStyle = ctx.strokeStyle; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(190, 150); ctx.lineTo(x, y); ctx.stroke();
-    if (v.magnitude > max * 1e-12) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x-9*Math.cos(a-.4), y-9*Math.sin(a-.4)); ctx.lineTo(x-9*Math.cos(a+.4), y-9*Math.sin(a+.4)); ctx.closePath(); ctx.fill(); }
-    ctx.fillText(`${key}: ${fmt(v.magnitude)} ∠ ${fmt(v.angle_deg)}° ${result.output_units[key]}`, 365, 40 + index * 29);
-  });
+  let groupIndex = 0;
+  for (const [unit, phasors] of groups) {
+    const offset = 300 * groupIndex++, centerY = offset + 150;
+    const max = Math.max(...phasors.map(([, v]) => v.magnitude), 1e-20), scale = 100 / max;
+    ctx.strokeStyle = '#395053'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(30, centerY); ctx.lineTo(350, centerY); ctx.moveTo(190, offset + 25); ctx.lineTo(190, offset + 275); ctx.stroke();
+    ctx.font = '11px monospace'; ctx.fillStyle = '#92a4aa'; ctx.fillText(`Phasors (${unit}) · independent scale`, 30, offset + 18); ctx.fillText('Im', 197, offset + 40); ctx.fillText('Re', 335, centerY + 18);
+    phasors.forEach(([key, v], index) => {
+      const x = 190 + v.real * scale, y = centerY - v.imag * scale, a = Math.atan2(y - centerY, x - 190);
+      ctx.strokeStyle = colors[index % colors.length]; ctx.fillStyle = ctx.strokeStyle; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(190, centerY); ctx.lineTo(x, y); ctx.stroke();
+      if (v.magnitude > max * 1e-12) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x-9*Math.cos(a-.4), y-9*Math.sin(a-.4)); ctx.lineTo(x-9*Math.cos(a+.4), y-9*Math.sin(a+.4)); ctx.closePath(); ctx.fill(); }
+      ctx.fillText(key, 365, offset + 40 + index * 38);
+      ctx.fillText(`${fmt(v.magnitude)} ∠ ${fmt(v.angle_deg)}° ${unit}`, 365, offset + 55 + index * 38);
+    });
+  }
 }
 function displayResult(result) {
   latest = result; $('error').hidden = true; $('result-status').textContent = 'COMPUTED · FULL PRECISION SAVED';

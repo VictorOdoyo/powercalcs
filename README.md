@@ -8,6 +8,8 @@
 
 PowerCalcs is a reusable Python library, JSON CLI, and local browser workbench for power systems engineers. It includes **50 calculators**, **30 unit families**, complex RMS phasors, ABC symmetrical components, unbalanced star/delta loads, and analytical reference cases. Runtime uses the Python standard library only.
 
+![Floating-star neutral displacement and current phasors](docs/images/floating-star.png)
+
 ## Start
 
 ```sh

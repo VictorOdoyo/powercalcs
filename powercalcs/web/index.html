@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="PowerCalcs electrical engineering calculation workbench">
+  <title>PowerCalcs · Engineering workbench</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="PowerCalcs home"><span class="brand-icon">ϟ</span><span>Power<span class="accent">Calcs</span><small>ENGINEERING WORKBENCH</small></span></a>
+  <div class="nav-label">CALCULATION LIBRARY <span id="count">50</span></div>
+  <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Find a calculation…" aria-label="Search calculators"></label>
+  <nav id="categories" aria-label="Calculation categories"></nav>
+  <div class="sidebar-footer"><span class="status-dot"></span> Local calculation engine <small>v1.0.0 · SI normalized · No cloud</small></div>
+</aside>
+<div class="workspace">
+  <header class="topbar"><span>WORKSPACE <span class="slash">/</span> <strong>Electrical studies</strong></span><div><span class="status-dot"></span> Engine ready <button id="history-toggle" class="subtle">Study history <span id="history-count">0</span></button></div></header>
+  <main>
+    <div class="eyebrow">POWER SYSTEMS / CALCULATION SUITE</div>
+    <div class="page-heading"><div><h1>Precision in every phase<span>.</span></h1><p>Build a calculation. Inspect the method. Keep the engineering trace.</p></div><span class="edition">50 CALCULATORS <b>01 / POWER SYSTEMS</b></span></div>
+    <section class="summary-strip" aria-label="Workbench capabilities"><div><strong>01</strong><span>Unit-aware inputs<small>Dimension-checked quantities</small></span></div><div><strong>02</strong><span>Transparent methods<small>Equations and model assumptions</small></span></div><div><strong>03</strong><span>Reproducible studies<small>Full-precision JSON exports</small></span></div></section>
+    <section class="calculator-layout">
+      <div class="calculator-picker panel"><div class="panel-caption">LIBRARY <span id="category-label">All calculations</span></div><div id="calculator-list"></div></div>
+      <div class="calculation-main">
+        <section class="panel input-panel"><div class="panel-caption"><span id="calc-category">POWER</span><span class="model-tag">ANALYTICAL MODEL</span></div><h2 id="calc-title">Loading calculations…</h2><p class="calc-desc" id="calc-description"></p>
+          <form id="calculator-form"><div id="input-fields" class="input-grid"></div><div class="form-actions"><button class="primary" type="submit">Run calculation <span>↗</span></button><button id="reset" type="button" class="subtle">Restore example</button><span class="input-note">RMS values unless stated</span></div></form>
+          <div id="error" role="alert" hidden></div>
+        </section>
+        <section id="result-panel" class="panel result-panel" aria-live="polite"><div class="panel-caption">CALCULATION OUTPUT <span id="result-status">AWAITING INPUT</span></div><div id="results"><div class="empty-state"><span>∿</span><h3>Your next engineering decision starts here.</h3><p>Review the example inputs, then run the calculation.</p></div></div><canvas id="phasor" width="640" height="300" aria-label="Complex result phasor diagram" hidden></canvas><div id="result-actions" hidden><button id="export" class="subtle">↓ Export JSON</button><button id="print" class="subtle">↗ Print report</button></div></section>
+        <section class="panel method-panel"><div class="panel-caption">METHOD & TRACEABILITY <span>OPEN EQUATIONS</span></div><ol id="equations"></ol><h3>Model assumptions</h3><div id="assumptions"></div><details id="trace" hidden><summary>Normalized inputs and provenance</summary><pre id="trace-data"></pre></details></section>
+      </div>
+    </section>
+    <section id="history-panel" class="panel" hidden><div class="panel-caption">LOCAL STUDY HISTORY <button id="clear-history" class="subtle">Clear history</button></div><p class="calc-desc">Stored in this browser on this device. Select a study to restore its inputs and saved result.</p><div id="history-list"></div></section>
+    <footer>PowerCalcs <span>Engineering models with explicit boundaries.</span><a href="https://github.com/VictorOdoyo/powercalcs" target="_blank" rel="noreferrer">Source & documentation ↗</a></footer>
+  </main>
+</div>
+</body>
+</html>

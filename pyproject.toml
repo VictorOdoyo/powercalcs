@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "powercalcs"
+version = "1.0.0"
+description = "Traceable electrical engineering calculations with a local study workbench"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Victor Odoyo"}]
+dependencies = []
+
+[project.scripts]
+powercalcs = "powercalcs.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["powercalcs*"]
+
+[tool.setuptools.package-data]
+powercalcs = ["web/*"]
